@@ -1,0 +1,39 @@
+//Colors
+    
+$wt: #ffffff
+$bl: #000000
+
+$primary: #00f3ff
+$secondary: #5773C9
+$base: #252525
+
+$wt05: rgba($wt, 0.5)
+$bl05: rgba($bl, 0.5)
+$gray3: #45484d
+
+$danger: #ff5454
+
+//Fonts
+
+$openSans: 'Open Sans', sans-serif
+
+//Mixins
+
+=trans 
+    transition: all 150ms ease-in-out 
+
+=textRadiance($color)
+    text-shadow: 0px 0px 10px $color
+
+=boxRadiance($color) 
+    box-shadow: 0px 0px 10px 2px $color
+
+=gradient($direction, $color1, $color2)
+    background: linear-gradient(to $direction, $color1 0%, $color2 80%)
+
+@keyframes fade
+    from
+        opacity: 0
+    to
+        opacity: 1
+

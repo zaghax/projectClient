@@ -1,6 +1,23 @@
 import React, {Component} from 'react';
 import * as firebase from 'firebase';
 
+const config = {
+    apiKey: "AIzaSyCkwdRv1u2LSarAY152iZgWL3H5RroueqM",
+    authDomain: "playlist-ca585.firebaseapp.com",
+    databaseURL: "https://playlist-ca585.firebaseio.com",
+    projectId: "playlist-ca585",
+    storageBucket: "playlist-ca585.appspot.com",
+    messagingSenderId: "850788790457"
+}
+
+firebase.initializeApp(config);
+
+const refDB = firebase.database().ref();
+
+const dbRefPlaylist = refDB.child('playlist');
+const dbRefCurrentPlaying = refDB.child('currentPlaying');
+const dbRefAPI_KEY = refDB.child('API_KEY');
+
 class Search extends Component {
 
     state = {
@@ -15,23 +32,6 @@ class Search extends Component {
     }
 
     componentDidMount() {
-
-        const config = {
-            apiKey: "AIzaSyCkwdRv1u2LSarAY152iZgWL3H5RroueqM",
-            authDomain: "playlist-ca585.firebaseapp.com",
-            databaseURL: "https://playlist-ca585.firebaseio.com",
-            projectId: "playlist-ca585",
-            storageBucket: "playlist-ca585.appspot.com",
-            messagingSenderId: "850788790457"
-        }
-
-        firebase.initializeApp(config);
-
-        const refDB = firebase.database().ref();
-
-        const dbRefPlaylist = refDB.child('playlist');
-        const dbRefCurrentPlaying = refDB.child('currentPlaying');
-        const dbRefAPI_KEY = refDB.child('API_KEY');
 
         dbRefAPI_KEY.on('value', snap => {
             this.setState({
@@ -53,6 +53,7 @@ class Search extends Component {
             })
             this.getPlaylist();
         });
+
     }
 
     setSearch = (e) => {
@@ -124,7 +125,7 @@ class Search extends Component {
 
     addPlaylistItem = (item) => {
 
-        firebase.database().ref().child('playlist').push(item);
+        dbRefPlaylist.push(item);
 
         this.getPlaylist();
 
@@ -138,7 +139,7 @@ class Search extends Component {
 
             const playListKeys = Object.keys(fullPlayList);
             const currentObjKey = playListKeys.indexOf(currentPlayingData.playing.objectKey) + 1;
-            const playListExtractKeys = playListKeys.slice(currentObjKey, currentObjKey + 10);
+            const playListExtractKeys = playListKeys.slice(currentObjKey);
             const listVideos = [];
 
             playListExtractKeys.map( item => {
@@ -195,9 +196,7 @@ class Search extends Component {
                     </div>
 
                     {!isPlaylist && (
-                        <button className="icon-plus addVideo" onClick={() => { this.addPlaylistItem(item)}}>
-                            <span>Add video</span>
-                        </button>
+                        <button className="icon-plus addVideo" onClick={() => { this.addPlaylistItem(item)}} />
                     )}
 
                 </div>
