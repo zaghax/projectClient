@@ -1,0 +1,21 @@
+.playList
+    .playListText
+        color: $primary
+        font-size: 12px
+        letter-spacing: 5px
+        font-weight: 100
+        text-align: center
+        margin: 0
+        padding: 10px 0
+        +textRadiance($primary)
+        +gradient( bottom, $gray3 ,$bl)
+
+    .playListWrapper
+        padding: 0 10px
+        height: 48vh
+        overflow-y: scroll
+
+    .videoItem
+        &.playListItem
+            .videoTitle
+                width: 70%

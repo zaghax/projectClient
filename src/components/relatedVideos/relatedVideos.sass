@@ -1,0 +1,74 @@
+.relatedVideosWrap
+
+    .relatedVideosText
+        color: $primary
+        font-size: 12px
+        letter-spacing: 5px
+        font-weight: 100
+        text-align: center
+        margin: 0
+        padding: 10px 0
+        +textRadiance($primary)
+        +gradient( bottom, $gray3 ,$bl)
+
+    .relatedVideos
+        display: flex
+        background: $bl05
+
+        .videoItem
+            flex-flow: column wrap
+            padding: 0
+            border-left: 1px solid rgba($wt, 0.2)
+            overflow: hidden
+            opacity: 0
+            @for $i from 1 through 3
+                &:nth-child(#{$i})
+                    animation: fade 1s $i * 100ms ease-in-out
+                    animation-fill-mode: forwards
+
+            .videoCover
+                position: relative
+
+                .videoImage
+                    width: 100%
+
+                .videoTitle
+                    width: 100%
+                    position: absolute
+                    bottom: 0
+                    left: 0
+                    padding: 5px
+                    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 70%,rgba(0,0,0,1) 100%)
+
+                    p
+                        font-size: 11px
+                        word-break: break-word
+                        color: $wt
+                        margin: 0
+                        padding: 0
+
+                .addVideo
+                    background: transparent
+                    border: none
+                    text-align: center
+                    padding: 5px
+                    margin: 0
+                    width: 100%
+                    position: absolute
+                    bottom: 0
+                    left: 0
+                    width: 100%
+                    height: 100%
+                    &:before
+                        color: $primary
+                        font-size: 30px
+                        position: absolute
+                        top: 0
+                        right: 0
+                        box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.75)
+                        background: rgba(0,0,0,0.5)
+
+        div.videoItem
+            &:first-child
+                border: none
+            

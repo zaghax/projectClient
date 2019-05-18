@@ -1,0 +1,62 @@
+.searchVideosWrapper
+    position: fixed
+    width: 100%
+    height: 100%
+    top: 0 
+    left: 0
+    background: rgba($bl, 0.8)
+    display: flex
+    flex-flow: column
+    justify-content: center
+    z-index: 999
+    transform: translateX(-100%)
+    +trans
+    &.active
+        transform: translateX(0)
+
+    .closeSearch
+        background: none
+        border: none
+        font-size: 30px
+        color: $primary
+        position: absolute
+        right: 10px
+        top: 4px
+        z-index: 1
+        padding: 0
+        cursor: pointer
+        outline: none
+        +textRadiance($primary)
+    
+    .searchResults
+        max-height: calc(100% - 150px)
+        overflow-y: scroll
+        padding: 0 10px
+        +trans
+
+    .searchForm
+        width: 100%
+        padding: 10px
+        position: relative
+        .searchInput
+            width: 100%
+            background: $bl05
+            font-size: 14px
+            border: 1px solid $primary
+            padding: 10px
+            padding-right: 40px
+            outline: none
+            border-radius: 5px
+            color: rgba($wt, 0.8)
+            font-size: 24px
+        .searchButton
+            background: none
+            border: none
+            font-size: 22px
+            color: $primary
+            position: absolute
+            right: 10px
+            top: 0
+            z-index: 1
+            height: 100%
+            cursor: pointer
