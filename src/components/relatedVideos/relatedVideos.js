@@ -9,9 +9,34 @@ class RelatedVideos extends Component {
         relatedVideos: []
     }
 
-    addPlaylistItem = (item) => {
-        dbRefPlaylist.push(item);
+    constructor(props){
+        super(props);
+        this.btnRefs = [];
     }
+
+    addRemovePlaylistItem = (item, index) => {
+        
+        if(this.btnRefs[index].classList.contains('icon-x')){
+
+            const fbId = this.btnRefs[index].getAttribute("id");
+            dbRefPlaylist.child(fbId).remove();
+            this.btnRefs[index].classList.add("icon-playlist_add");
+            this.btnRefs[index].classList.remove("icon-x");
+
+        }else{
+            dbRefPlaylist.push(item).then((snap)=> {
+
+                this.btnRefs[index].classList.remove("icon-playlist_add");
+                this.btnRefs[index].classList.add("icon-x");
+                this.btnRefs[index].setAttribute("id", snap.key);
+
+            });
+        }
+    }
+
+   /*  addPlaylistItem = (item) => {
+        dbRefPlaylist.push(item);
+    } */
 
     componentDidMount (){
         this.props.onRef(this);
@@ -51,10 +76,9 @@ class RelatedVideos extends Component {
                         <div className="videoTitle" >
                             <p dangerouslySetInnerHTML={{__html: item.snippet.title}} />
                         </div>
-                        <button className="icon-playlist_add addVideo" onClick={() => { this.addPlaylistItem(item)}} />
+                        <button className="icon-playlist_add addVideo" onClick={() => { this.addRemovePlaylistItem(item, index)}} ref={((addBtn) => {this.btnRefs[index] = addBtn})}/>
                     </div>
                     
-                
                 </div>
             )
         })

@@ -11,6 +11,25 @@ class PlayList extends Component {
         this.getPlaylist();
     }
 
+    
+
+    scrollTop = () => {
+        document.querySelector('.playListWrapper').scrollTop = 0;
+    }
+
+    scrollBottom = () => {
+        let scrollHeight = document.querySelector('.playListWrapper').scrollHeight;
+        document.querySelector('.playListWrapper').scrollTop = scrollHeight;
+    }
+
+    scrollListener = () => {
+        if(document.querySelector('.playListWrapper').scrollTop > 200){
+            document.querySelector('.icon-chevrons-up').classList.add('active');
+        }else{
+            document.querySelector('.icon-chevrons-up').classList.remove('active');
+        }
+    }
+
     getPlaylist = () => {
 
         const {fullPlayList, currentPlayingData} = this.props;
@@ -61,8 +80,14 @@ class PlayList extends Component {
 
         return(
             <div className="playList">
-                <p className="playListText">PLAYLIST</p>
-                <div className="playListWrapper">
+                <div className="playListHead">
+                    <span>PLAYLIST</span>
+                    <div className="scrollControls">
+                        <button className="icon-chevrons-up scroll__btn" onClick={this.scrollTop}/>
+                        <button className="icon-chevrons-down scroll__btn" onClick={this.scrollBottom}/>
+                    </div>
+                </div>
+                <div className="playListWrapper" onScroll={this.scrollListener}>
                     {this.getPlaylistVideos(playListVideos)}
                 </div>
             </div>

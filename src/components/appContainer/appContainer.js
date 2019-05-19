@@ -73,6 +73,26 @@ class AppContainer extends Component {
         })
     }
 
+    playlistHeight = () => {
+
+        let headHeight = 0;
+        let currentPlayingHeight = 0;
+        let relatedVideosWrapHeight = 0;
+        let playListHeadHeight = 0;
+        let playListHeight = 0;
+        let windowHeight = 0;
+
+        headHeight = document.querySelector('.header') !== null ? document.querySelector('.header').offsetHeight : 0;
+        currentPlayingHeight = document.querySelector('.currentlyPlaying') !== null ? document.querySelector('.currentlyPlaying').offsetHeight : 0;
+        relatedVideosWrapHeight = document.querySelector('.relatedVideosWrap') !== null ? document.querySelector('.relatedVideosWrap').offsetHeight : 0;
+        playListHeadHeight = document.querySelector('.playListHead') !== null ? document.querySelector('.playListHead').offsetHeight : 0;
+        windowHeight = document.body.clientHeight;
+        
+        playListHeight = windowHeight - (headHeight + currentPlayingHeight + relatedVideosWrapHeight + playListHeadHeight);
+
+        document.querySelector('.playListWrapper').style.height = `${playListHeight}px` ;
+    }
+
     render(){
 
         const {
@@ -81,6 +101,9 @@ class AppContainer extends Component {
             fullPlayList,
             isDataReady
         } = this.state;
+
+        isDataReady && this.playlistHeight();
+
 
         return (
             <div className="appContainer">
