@@ -16,19 +16,24 @@ class SearchVideos extends Component {
 
     addRemovePlaylistItem = (item, index) => {
         
-        if(this.btnRefs[index].classList.contains('icon-x')){
+        if(this.btnRefs[index].classList.contains('icon-trash-2')){
 
             const fbId = this.btnRefs[index].getAttribute("id");
             dbRefPlaylist.child(fbId).remove();
+            this.btnRefs[index].classList.remove("icon-trash-2");
             this.btnRefs[index].classList.add("icon-playlist_add");
-            this.btnRefs[index].classList.remove("icon-x");
 
         }else{
             dbRefPlaylist.push(item).then((snap)=> {
 
                 this.btnRefs[index].classList.remove("icon-playlist_add");
-                this.btnRefs[index].classList.add("icon-x");
                 this.btnRefs[index].setAttribute("id", snap.key);
+                this.btnRefs[index].classList.add("icon-check");
+
+                setTimeout(()=>{
+                    this.btnRefs[index].classList.remove("icon-check");
+                    this.btnRefs[index].classList.add("icon-trash-2");
+                }, 1000)
 
             });
         }
@@ -57,6 +62,12 @@ class SearchVideos extends Component {
             `&q=${searchValue} musica`
             ];
 
+        this.btnRefs = [];
+
+        this.setState({
+            searchResults: []
+        })
+
         getVideos(params)
         .then((response) => response.json())
         .then(response => {
@@ -68,6 +79,7 @@ class SearchVideos extends Component {
     }
 
     getVideoResults = (videos) => {
+
         return videos.map((item, index) => {
 
             return (
@@ -85,6 +97,7 @@ class SearchVideos extends Component {
             )
 
         })
+        
     }
 
     render(){

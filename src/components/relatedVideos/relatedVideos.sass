@@ -69,10 +69,16 @@
                         box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.75)
                         background: rgba(0,0,0,0.5)
                         +textRadiance($primary)
-                    &.icon-x
+                    &.icon-trash-2
                         &:before
                             color: $danger
+                            font-size: 25px
                             +textRadiance($danger)
+                    &.icon-check
+                        &:before
+                            color: $success
+                            font-size: 25px
+                            +textRadiance($success)
 
         div.videoItem
             &:first-child
