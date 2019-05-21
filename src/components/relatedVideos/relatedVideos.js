@@ -39,10 +39,6 @@ class RelatedVideos extends Component {
         }
     }
 
-   /*  addPlaylistItem = (item) => {
-        dbRefPlaylist.push(item);
-    } */
-
     componentDidMount (){
         this.props.onRef(this);
     }

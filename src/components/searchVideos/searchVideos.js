@@ -39,12 +39,6 @@ class SearchVideos extends Component {
         }
     }
 
-    /* addPlaylistItem = (item) => {
-
-        dbRefPlaylist.push(item);
-
-    } */
-
     setSearch = (e) => {
         this.setState({
             searchValue: e.target.value
