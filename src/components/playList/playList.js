@@ -11,8 +11,6 @@ class PlayList extends Component {
         this.getPlaylist();
     }
 
-    
-
     scrollTop = () => {
         document.querySelector('.playListWrapper').scrollTop = 0;
     }
