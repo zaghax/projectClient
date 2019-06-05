@@ -109,9 +109,54 @@
                 &:before
                     color: $success
                     +textRadiance($success)
+            &.icon-clock
+                pointer-events: none
+                &:before
+                    color: $alert
 
 .errorMessage
     width: 100%
     color: $primary
     font-size: 18px
     text-align: center
+
+
+.popUpAlert
+    position: absolute
+    height: 100%
+    width: 100%
+    background: rgba($bl, 0.8)
+    top: 0
+    left: 0
+    z-index: 9999
+    display: flex
+    flex-flow: row wrap
+    justify-content: center
+    align-items: center
+    transform: translateY(-100%)
+    +trans
+    &.active
+        transform: translateY(0%)
+    .popUpCard
+        width: 90%
+        border: 2px solid $primary
+        border-radius: 5px
+        padding: 20px
+        display: flex
+        flex-flow: column
+        justify-content: center
+        align-items: center
+        .popUpText
+            color: $primary
+            text-align: center
+        .closePopUp
+            background: transparent
+            color: $primary
+            border: 2px solid $primary
+            border-radius: 5px
+            font-size: 18px
+            width: 100%
+            outline: none
+            padding: 10px
+            width: 90%
+        

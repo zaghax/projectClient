@@ -22,6 +22,8 @@ export const dbRefPlaylist = refDB.child('playlist');
 const dbRefCurrentPlaying = refDB.child('currentPlaying');
 // const dbRefAPI_KEY = refDB.child('API_KEY');
 
+let timer;
+
 class AppContainer extends Component {
 
     state = {
@@ -29,7 +31,11 @@ class AppContainer extends Component {
         fullPlayList: {},
         currentPlayingData: {},
         isSearchClosed: true,
-        isDataReady: false
+        isDataReady: false,
+        videoCounter: 0,
+        disableAddVideoBtn: false,
+        alertPopUp: false,
+        waitTime: 15
     }
 
     componentDidMount() {
@@ -52,7 +58,7 @@ class AppContainer extends Component {
             this.setState({
                 currentPlayingData: snap.val()
             }, ()=> {
-                this.childRelated.getRelatedResults();
+                // this.childRelated.getRelatedResults();
                 this.childPlaylist.getPlaylist();
             })
         });
@@ -93,17 +99,64 @@ class AppContainer extends Component {
         document.querySelector('.playListWrapper').style.height = `${playListHeight}px` ;
     }
 
+    setTimer = () => {
+
+        this.setState({
+            alertPopUp: true
+        })
+
+        timer = setTimeout(() => {
+            this.setState({
+                disableAddVideoBtn: false,
+                videoCounter: 0,
+                alertPopUp: false
+            })
+            this.childSearchVideos.checkStatus();
+            console.log('ejecutado check', this.childSearchVideos);
+        }, 10000);
+    }
+
+    clearTimer = () => {
+        clearTimeout(timer);
+    }
+
+    addVideoCounter = () => {
+        this.setState({
+            videoCounter: this.state.videoCounter + 1
+        }, () => {
+            this.state.videoCounter >= 4 && this.setState({
+                disableAddVideoBtn: true
+            }, this.setTimer())
+        });
+    }
+
+    removeVideoCounter = () => {
+        this.setState({
+            videoCounter: this.state.videoCounter - 1
+        }, () => {
+            this.state.videoCounter < 4 && this.setState({
+                disableAddVideoBtn: false
+            }, this.clearTimer())
+        })
+    }
+
+    closePopUp = () => {
+        this.setState({
+            alertPopUp: false
+        })
+    }
+
     render(){
 
         const {
             isSearchClosed,
             currentPlayingData,
             fullPlayList,
-            isDataReady
+            isDataReady,
+            alertPopUp
         } = this.state;
 
         isDataReady && this.playlistHeight();
-
 
         return (
             <div className="appContainer">
@@ -118,22 +171,35 @@ class AppContainer extends Component {
                         <i className="icon-loader"/>
                     </div>
                 }
+
+                <div className={`popUpAlert ${alertPopUp ? 'active' : ''}`}>
+                    <div className="popUpCard">
+                        <p className="popUpText">
+                            You have reached the limit number of videos per turn.<br/> Please wait 15 minutes to add more videos.
+                        </p>
+                        <button className="closePopUp" onClick={this.closePopUp}>OK</button>
+                    </div>
+                </div>
                 
                 <div className={`mainApp ${isDataReady ? 'ready' : 'notReady'}`}>
 
                     <SearchVideos 
                         isSearchClosed={isSearchClosed} 
                         closeSearchWindow={this.toggleSearchWindow}
+                        addVideoCounter={this.addVideoCounter}
+                        removeVideoCounter={this.removeVideoCounter}
+                        addVideoButtonStatus={this.state.disableAddVideoBtn}
+                        onRef={ref => (this.childSearchVideos = ref)}
                     />
 
                     <CurrentlyPlaying 
                         currentPlayingData={currentPlayingData}
                     />
 
-                    <RelatedVideos 
+                    {/* <RelatedVideos 
                         currentPlayingData={currentPlayingData}
                         onRef={ref => (this.childRelated = ref)}
-                    />
+                    /> */}
                     
                     <PlayList 
                         currentPlayingData={currentPlayingData}
