@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-// import {getVideos} from '../getVideos/getVideos';
 import {dbRefPlaylist} from '../appContainer/appContainer';
 import {checkButtonStatus, getVideos} from '../common/commonFunctions';
 
@@ -22,24 +21,6 @@ class RelatedVideos extends Component {
     checkStatus = () => {
         checkButtonStatus(this.props.addVideoButtonStatus, this.btnRefs);
     }
-
-    // checkStatus = () => {
-    //     if(this.props.addVideoButtonStatus){
-    //         this.btnRefs.map((item) => {
-    //             if(item.classList.contains('icon-playlist_add')){
-    //                 item.classList.remove('icon-playlist_add');
-    //                 item.classList.add('icon-clock');
-    //             }
-    //         });
-    //     }else{
-    //         this.btnRefs.map((item) => {
-    //             if(item.classList.contains('icon-clock')){
-    //                 item.classList.remove('icon-clock');
-    //                 item.classList.add('icon-playlist_add');
-    //             }
-    //         });
-    //     }
-    // }
 
     addRemovePlaylistItem = (item, index) => {
         
