@@ -35,7 +35,8 @@ class AppContainer extends Component {
         videoCounter: 0,
         disableAddVideoBtn: false,
         alertPopUp: false,
-        waitTime: 15
+        waitTime: 1,
+        limitVideos: 4
     }
 
     componentDidMount() {
@@ -58,7 +59,7 @@ class AppContainer extends Component {
             this.setState({
                 currentPlayingData: snap.val()
             }, ()=> {
-                // this.childRelated.getRelatedResults();
+                this.childRelated.getRelatedResults();
                 this.childPlaylist.getPlaylist();
             })
         });
@@ -112,8 +113,8 @@ class AppContainer extends Component {
                 alertPopUp: false
             })
             this.childSearchVideos.checkStatus();
-            console.log('ejecutado check', this.childSearchVideos);
-        }, 10000);
+            this.childRelated.checkStatus();
+        }, 60000 * this.state.waitTime);
     }
 
     clearTimer = () => {
@@ -121,23 +122,35 @@ class AppContainer extends Component {
     }
 
     addVideoCounter = () => {
+        const {videoCounter, limitVideos} = this.state;
         this.setState({
-            videoCounter: this.state.videoCounter + 1
+            videoCounter: videoCounter + 1
         }, () => {
-            this.state.videoCounter >= 4 && this.setState({
+            this.state.videoCounter >= limitVideos && this.setState({
                 disableAddVideoBtn: true
-            }, this.setTimer())
+            }, () => {
+                this.setTimer();
+                this.childSearchVideos.checkStatus();
+                this.childRelated.checkStatus();
+            })
         });
+        
     }
 
     removeVideoCounter = () => {
+        const {videoCounter, limitVideos} = this.state;
         this.setState({
-            videoCounter: this.state.videoCounter - 1
+            videoCounter: videoCounter >= 0 && videoCounter - 1
         }, () => {
-            this.state.videoCounter < 4 && this.setState({
+            this.state.videoCounter < limitVideos && this.setState({
                 disableAddVideoBtn: false
-            }, this.clearTimer())
-        })
+            }, () => {
+                this.clearTimer();
+                this.childSearchVideos.checkStatus();
+                this.childRelated.checkStatus();
+            })
+        });
+        
     }
 
     closePopUp = () => {
@@ -175,7 +188,7 @@ class AppContainer extends Component {
                 <div className={`popUpAlert ${alertPopUp ? 'active' : ''}`}>
                     <div className="popUpCard">
                         <p className="popUpText">
-                            You have reached the limit number of videos per turn.<br/> Please wait 15 minutes to add more videos.
+                            You have reached the limit number of videos per turn.<br/> Please wait {this.state.waitTime} minutes to add more videos.
                         </p>
                         <button className="closePopUp" onClick={this.closePopUp}>OK</button>
                     </div>
@@ -196,10 +209,13 @@ class AppContainer extends Component {
                         currentPlayingData={currentPlayingData}
                     />
 
-                    {/* <RelatedVideos 
+                    <RelatedVideos 
                         currentPlayingData={currentPlayingData}
+                        addVideoButtonStatus={this.state.disableAddVideoBtn}
+                        addVideoCounter={this.addVideoCounter}
+                        removeVideoCounter={this.removeVideoCounter}
                         onRef={ref => (this.childRelated = ref)}
-                    /> */}
+                    />
                     
                     <PlayList 
                         currentPlayingData={currentPlayingData}

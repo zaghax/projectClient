@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {getVideos} from '../getVideos/getVideos';
+// import {getVideos} from '../getVideos/getVideos';
 import {dbRefPlaylist} from '../appContainer/appContainer';
+import {checkButtonStatus, getVideos} from '../common/commonFunctions';
 
 class SearchVideos extends Component {
 
@@ -19,68 +20,30 @@ class SearchVideos extends Component {
     }
 
     checkStatus = () => {
-        console.log('confirmo check', this.btnRefs.length);
-        if(this.props.addVideoButtonStatus){
-            this.btnRefs.map((item) => {
-                if(item.classList.contains('icon-playlist_add')){
-                    item.classList.remove('icon-playlist_add');
-                    item.classList.add('icon-clock');
-                }
-            });
-        }else{
-            this.btnRefs.map((item) => {
-                if(item.classList.contains('icon-clock')){
-                    item.classList.remove('icon-clock');
-                    item.classList.add('icon-playlist_add');
-                }
-            });
-        }
+        checkButtonStatus(this.props.addVideoButtonStatus, this.btnRefs);
     }
-
-    consoleLog = () => {
-        console.log('test')
-    }
-
 
     // checkStatus = () => {
-    //     console.log(document.getElementsByClassName('icon-playlist_add'))
-    //     // if(this.props.addVideoButtonStatus){
-    //     //     if(document.getElementsByClassName('icon-playlist_add')){
-    //     //         document.getElementsByClassName('icon-playlist_add').classList.remove('icon-playlist_add').add('icon-clock');
-    //     //     }
-    //     // }else{
-    //     //     if(document.getElementsByClassName('icon-clock')){
-    //     //         document.getElementsByClassName('icon-clock').classList.remove('icon-clock').add('icon-playlist_add');
-    //     //     }
-    //     // }
+
+    //     if(this.props.addVideoButtonStatus){
+    //         this.btnRefs.map((item) => {
+    //             if(item.classList.contains('icon-playlist_add')){
+    //                 item.classList.remove('icon-playlist_add');
+    //                 item.classList.add('icon-clock');
+    //             }
+    //         });
+    //     }else{
+    //         this.btnRefs.map((item) => {
+    //             if(item.classList.contains('icon-clock')){
+    //                 item.classList.remove('icon-clock');
+    //                 item.classList.add('icon-playlist_add');
+    //             }
+    //         });
+    //     }
+
     // }
 
-
     addRemovePlaylistItem = (item, index) => {
-        
-        // if(this.btnRefs[index].classList.contains('icon-trash-2') && this.props.addVideoButtonStatus === false){
-
-        //     const fbId = this.btnRefs[index].getAttribute("id");
-        //     dbRefPlaylist.child(fbId).remove();
-        //     this.btnRefs[index].classList.remove("icon-trash-2");
-        //     this.btnRefs[index].classList.add("icon-playlist_add");
-        //     this.props.removeVideoCounter();
-
-        // }else{
-        //     dbRefPlaylist.push(item).then((snap)=> {
-
-        //         this.btnRefs[index].classList.remove("icon-playlist_add");
-        //         this.btnRefs[index].setAttribute("id", snap.key);
-        //         this.btnRefs[index].classList.add("icon-check");
-        //         this.props.addVideoCounter();
-
-        //         setTimeout(()=>{
-        //             this.btnRefs[index].classList.remove("icon-check");
-        //             this.btnRefs[index].classList.add("icon-trash-2");
-        //         }, 1000)
-
-        //     });
-        // }
 
         if(this.btnRefs[index].classList.contains('icon-playlist_add') && this.props.addVideoButtonStatus === false){
             
@@ -94,7 +57,6 @@ class SearchVideos extends Component {
                 setTimeout(()=>{
                     this.btnRefs[index].classList.remove("icon-check");
                     this.btnRefs[index].classList.add("icon-trash-2");
-                    this.checkStatus();
                 }, 500)
 
             });
@@ -107,10 +69,6 @@ class SearchVideos extends Component {
             this.btnRefs[index].classList.remove("icon-trash-2");
             this.btnRefs[index].classList.add("icon-playlist_add");
             this.props.removeVideoCounter();
-
-            setTimeout(()=>{
-                this.checkStatus();
-            }, 500)
 
         }
 
@@ -145,7 +103,7 @@ class SearchVideos extends Component {
             this.setState({
                 searchResults: response.items
             })
-        }, setTimeout(() => {this.checkStatus()}, 500));
+        }, setTimeout(() => {this.checkStatus()}, 1000));
 
     }
 
