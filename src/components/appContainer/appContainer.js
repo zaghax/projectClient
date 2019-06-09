@@ -128,8 +128,14 @@ class AppContainer extends Component {
 
             this.setState({
                 remainingTime: this.state.remainingTime - 1
-            })
-            this.state.remainingTime == 0 && clearInterval(interval);
+            });
+
+            if (this.state.remainingTime == 0){
+                this.setState({
+                    remainingTime: 60 * setTime
+                });
+                clearInterval(interval);
+            }
 
         }, 1000);
 
