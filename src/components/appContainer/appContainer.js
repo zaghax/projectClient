@@ -116,7 +116,8 @@ class AppContainer extends Component {
             this.setState({
                 disableAddVideoBtn: false,
                 videoCounter: 0,
-                alertPopUp: false
+                alertPopUp: false,
+                showTimer: false
             })
             this.childSearchVideos.checkStatus();
             this.childRelated.checkStatus();
