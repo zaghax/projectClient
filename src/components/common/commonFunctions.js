@@ -36,3 +36,20 @@ export const checkButtonStatus = (status, refs) => {
         });
     }
 }
+
+export const formatTime = (time) => {   
+
+    let hrs = ~~(time / 3600);
+    let mins = ~~((time % 3600) / 60);
+    let secs = ~~time % 60;
+    let timeFormated = "";
+
+    if (hrs > 0) {
+        timeFormated += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }
+
+    timeFormated += "" + mins + ":" + (secs < 10 ? "0" : "");
+    timeFormated += "" + secs;
+
+    return timeFormated;
+}

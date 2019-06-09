@@ -3,6 +3,7 @@ import RelatedVideos from '../relatedVideos/relatedVideos';
 import PlayList from '../playList/playList';
 import CurrentlyPlaying from '../currentlyPlaying/currentlyPlaying';
 import SearchVideos from '../searchVideos/searchVideos';
+import {formatTime} from '../common/commonFunctions';
 import * as firebase from 'firebase';
 
 const config = {
@@ -23,6 +24,8 @@ const dbRefCurrentPlaying = refDB.child('currentPlaying');
 // const dbRefAPI_KEY = refDB.child('API_KEY');
 
 let timer;
+let interval;
+const setTime = 3;
 
 class AppContainer extends Component {
 
@@ -35,8 +38,10 @@ class AppContainer extends Component {
         videoCounter: 0,
         disableAddVideoBtn: false,
         alertPopUp: false,
-        waitTime: 1,
-        limitVideos: 4
+        waitTime: setTime,
+        limitVideos: 4,
+        remainingTime: 60 * setTime,
+        showTimer: false
     }
 
     componentDidMount() {
@@ -103,7 +108,8 @@ class AppContainer extends Component {
     setTimer = () => {
 
         this.setState({
-            alertPopUp: true
+            alertPopUp: true,
+            showTimer: true
         })
 
         timer = setTimeout(() => {
@@ -114,11 +120,26 @@ class AppContainer extends Component {
             })
             this.childSearchVideos.checkStatus();
             this.childRelated.checkStatus();
+
         }, 60000 * this.state.waitTime);
+
+        interval = setInterval(() => {
+
+            this.setState({
+                remainingTime: this.state.remainingTime - 1
+            })
+            this.state.remainingTime == 0 && clearInterval(interval);
+
+        }, 1000);
+
     }
 
     clearTimer = () => {
         clearTimeout(timer);
+        clearInterval(interval);
+        this.setState({
+            showTimer: false
+        })
     }
 
     addVideoCounter = () => {
@@ -134,7 +155,6 @@ class AppContainer extends Component {
                 this.childRelated.checkStatus();
             })
         });
-        
     }
 
     removeVideoCounter = () => {
@@ -166,7 +186,8 @@ class AppContainer extends Component {
             currentPlayingData,
             fullPlayList,
             isDataReady,
-            alertPopUp
+            alertPopUp,
+            showTimer
         } = this.state;
 
         isDataReady && this.playlistHeight();
@@ -195,6 +216,12 @@ class AppContainer extends Component {
                 </div>
                 
                 <div className={`mainApp ${isDataReady ? 'ready' : 'notReady'}`}>
+
+                    {showTimer &&
+                        <p className="timer">
+                            {formatTime(this.state.remainingTime)}
+                        </p>
+                    }
 
                     <SearchVideos 
                         isSearchClosed={isSearchClosed} 

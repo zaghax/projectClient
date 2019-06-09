@@ -23,6 +23,7 @@
         outline: none
 
 .mainApp
+    position: relative
     +trans
     &.notReady
         opacity: 0
@@ -95,7 +96,6 @@
     font-size: 18px
     text-align: center
 
-
 .popUpAlert
     position: absolute
     height: 100%
@@ -136,3 +136,14 @@
             padding: 10px
             width: 90%
         
+.timer
+    position: absolute
+    color: $alert
+    font-size: 20px
+    margin: 0
+    top: 0
+    right: 0
+    padding: 0 5px
+    border-bottom-left-radius: 3px
+    +textRadiance($alert)
+
