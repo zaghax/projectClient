@@ -24,7 +24,7 @@
   ],
   "devDependencies": {
     "firebase": "^5.9.2",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "youtube-api-search": "0.0.5",
     "youtube-api-v3-search": "^1.2.1"
   }
